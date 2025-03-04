@@ -18,6 +18,6 @@ def scrape_wikipedia(article, depth, visited=None):
     soup = BeautifulSoup(response.text, 'html.parser')
     content = ' '.join(p.text for p in soup.find_all('p'))
     links = [a['href'].split('/')[-1] for a in soup.select('p a[href^="/wiki/"]') if ':' not in a['href']]
-    for link in links[:5]:  # Limit the number of links followed
+    for link in links:
         content += scrape_wikipedia(link, depth - 1, visited)
     return content
