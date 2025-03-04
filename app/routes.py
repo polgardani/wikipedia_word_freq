@@ -10,6 +10,11 @@ def word_frequency():
     article = request.args.get('article')
     depth = int(request.args.get('depth', 1))
     content = scrape_wikipedia(article, depth)
+
+    # Check if the article was found
+    if content is None:
+        return jsonify({"error": "This article does not exist."}), 404  # Return an error with status 404
+    
     word_freq = calculate_word_frequencies(content)
     return jsonify(word_freq)
 
@@ -21,5 +26,10 @@ def keywords():
     ignore_list = set(data['ignore_list'])
     percentile = data['percentile']
     content = scrape_wikipedia(article, depth)
+    
+    # Check if the article was found
+    if content is None:
+        return jsonify({"error": "This article does not exist."}), 404  # Return an error with status 404
+
     word_freq = calculate_word_frequencies(content, ignore_list, percentile)
     return jsonify(word_freq)
